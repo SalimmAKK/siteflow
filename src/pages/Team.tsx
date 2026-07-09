@@ -21,7 +21,7 @@ import {
   UserPlus,
   UserMinus
 } from 'lucide-react';
-import emailjs from '@emailjs/browser';
+import { sendTeamInviteEmail } from '@/lib/web3forms';
 import { db } from '@/lib/firebase';
 import { useAuth } from '@/hooks/useAuth';
 import type { User, Project, Task, Invitation } from '@/types';
@@ -153,23 +153,14 @@ export const Team: React.FC = () => {
           createdAt: Timestamp.now()
         });
 
-        // Send Email using EmailJS
+        // Send invite notification via Web3Forms
         try {
-          if (import.meta.env.VITE_EMAILJS_SERVICE_ID && import.meta.env.VITE_EMAILJS_TEMPLATE_ID && import.meta.env.VITE_EMAILJS_PUBLIC_KEY) {
-            await emailjs.send(
-              import.meta.env.VITE_EMAILJS_SERVICE_ID,
-              import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-              {
-                to_email: memberEmail,
-                manager_name: user?.displayName || 'A Manager',
-                project_name: targetProject?.title || 'a project',
-                signup_link: window.location.origin + '/register'
-              },
-              import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-            );
-          } else {
-            console.warn("EmailJS environment variables are missing. Email not sent.");
-          }
+          await sendTeamInviteEmail({
+            toEmail: memberEmail,
+            managerName: user?.displayName || 'A Manager',
+            projectName: targetProject?.title || 'a project',
+            signupLink: window.location.origin + '/register',
+          });
         } catch (emailError) {
           console.error("Failed to send email:", emailError);
           toast.error("Invitation saved, but failed to send the email.");
