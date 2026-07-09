@@ -1,0 +1,82 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Allow all authenticated users to read/write during development
+    // TODO: Tighten these rules before production deployment
+    
+    // User Profiles
+    match /users/{userId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null;
+      allow update, delete: if request.auth != null;
+    }
+    
+    // Projects
+    match /projects/{projectId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null;
+      allow update, delete: if request.auth != null;
+    }
+    
+    // Tasks
+    match /tasks/{taskId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null;
+      allow update, delete: if request.auth != null;
+    }
+
+    // Activities
+    match /activities/{activityId} {
+      allow read: if request.auth != null;
+      allow create, update, delete: if request.auth != null;
+    }
+
+    // Events
+    match /events/{eventId} {
+      allow read: if request.auth != null;
+      allow create, update, delete: if request.auth != null;
+    }
+
+    // Invitations
+    match /invitations/{invitationId} {
+      allow read: if true; // allow reading during registration
+      allow create, update, delete: if request.auth != null;
+    }
+
+    // Notifications
+    match /notifications/{notificationId} {
+      allow read: if request.auth != null && request.auth.uid == resource.data.userId;
+      allow create: if request.auth != null;
+      allow update, delete: if request.auth != null && request.auth.uid == resource.data.userId;
+    }
+
+    // Site Diary Entries
+    match /diaryEntries/{entryId} {
+      allow read: if request.auth != null;
+      allow create, update, delete: if request.auth != null;
+    }
+
+    // Public client-portal projections (/share/:token).
+    //
+    // This is the ONE place we intentionally loosen security. It is kept as
+    // narrow as possible:
+    //   - The real `projects` collection above is NOT touched — it stays
+    //     authenticated-only. We never expose full project docs publicly.
+    //   - These docs are a separate, purpose-built projection that contains
+    //     only client-safe fields (project name, % progress, current phase,
+    //     upcoming milestone, recent activity) — no team/manager identities,
+    //     budgets, or internal notes. (Firestore rules can't filter fields on a
+    //     read, so a dedicated projection is the correct way to limit exposure.)
+    //   - `get` is public because the doc id IS the unguessable bearer token.
+    //   - `list` is denied so the collection/tokens can't be enumerated.
+    //   - Only authenticated users can create/update a projection.
+    match /sharedProjects/{shareToken} {
+      allow get: if true;
+      allow list: if false;
+      allow create, update, delete: if request.auth != null;
+    }
+
+  }
+}

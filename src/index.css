@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 42 75% 96%;
+    --foreground: 240 10% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 10%;
+
+    --primary: 240 5% 10%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 42 20% 90%;
+    --secondary-foreground: 240 10% 10%;
+
+    --muted: 42 20% 90%;
+    --muted-foreground: 240 5% 45%;
+
+    --accent: 42 50% 92%;
+    --accent-foreground: 240 10% 10%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 42 20% 88%;
+    --input: 42 20% 88%;
+    --ring: 240 10% 10%;
+
+    --radius: 1.25rem;
+
+    /* SiteFlow brand accents (shared with marketing.css) — blueprint blue for
+       data-viz, hazard amber for alerts/critical items and primary actions. */
+    --blueprint: #26456B;
+    --blueprint-light: #EAF0F6;
+    --hazard: #F2B705;
+    --hazard-ink: #5A3E00;
+  }
+
+  .dark {
+    --background: 240 10% 8%;
+    --foreground: 42 20% 90%;
+
+    --card: 240 5% 12%;
+    --card-foreground: 42 20% 90%;
+
+    --popover: 240 5% 12%;
+    --popover-foreground: 42 20% 90%;
+
+    --primary: 42 75% 96%;
+    --primary-foreground: 240 10% 10%;
+
+    --secondary: 240 5% 18%;
+    --secondary-foreground: 42 20% 90%;
+
+    --muted: 240 5% 18%;
+    --muted-foreground: 240 5% 65%;
+
+    --accent: 240 5% 25%;
+    --accent-foreground: 42 20% 90%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 240 5% 20%;
+    --input: 240 5% 20%;
+    --ring: 240 5% 40%;
+
+    /* Brand accents stay constant across themes; use a darker blueprint tint
+       for surfaces so it reads on the dark canvas. */
+    --blueprint: #3D6DA6;
+    --blueprint-light: #1E2A38;
+    --hazard: #F2B705;
+    --hazard-ink: #F7F1E4;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+}

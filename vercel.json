@@ -1,0 +1,10 @@
+{
+  "rewrites": [
+    { "source": "/manifest.webmanifest", "destination": "/manifest.webmanifest" },
+    { "source": "/sw.js", "destination": "/sw.js" },
+    { "source": "/workbox-(.*).js", "destination": "/workbox-$1.js" },
+    { "source": "/(.*).png", "destination": "/$1.png" },
+    { "source": "/(.*).svg", "destination": "/$1.svg" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
